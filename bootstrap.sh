@@ -13,4 +13,4 @@ curl -H "Authorization: token $GH_TOKEN" \
      -o setup-pi.sh
 
 chmod +x setup-pi.sh
-./setup-pi.sh pihole
+./setup-pi.sh $GH_TOKEN
