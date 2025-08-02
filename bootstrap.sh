@@ -11,6 +11,7 @@ fi
 
 # Download the setup script
 curl -H "Authorization: token $GH_TOKEN" \
+     -H "Accept: application/vnd.github.v3.raw" \
      -L "https://api.github.com/repos/bslater/home/contents/setup-pi.sh?ref=main" \
      -o setup-pi.sh
 
