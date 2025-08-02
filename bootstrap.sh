@@ -11,7 +11,7 @@ fi
 
 # Download the setup script
 curl -H "Authorization: token $GH_TOKEN" \
-     -L "https://api.github.com/repos/bslater/home/contents/setup-pi.sh" \
+     -L "https://api.github.com/repos/bslater/home/contents/setup-pi.sh?ref=main" \
      -o setup-pi.sh
 
 chmod +x setup-pi.sh
