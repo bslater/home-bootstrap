@@ -9,11 +9,12 @@ if [[ -z "$GH_TOKEN" ]]; then
   echo
 fi
 
-# Download the setup script
-curl -H "Authorization: token $GH_TOKEN" \
+# Download the setup script from the private repository
+curl -fsSL \
+     -H "Authorization: token $GH_TOKEN" \
      -H "Accept: application/vnd.github.v3.raw" \
-     -L "https://raw.githubusercontent.com/bslater/home/main/setup-pi.sh" \
+     "https://raw.githubusercontent.com/bslater/home/main/setup-pi.sh" \
      -o setup-pi.sh
 
 chmod +x setup-pi.sh
-./setup-pi.sh $GH_TOKEN
+./setup-pi.sh "$GH_TOKEN"
