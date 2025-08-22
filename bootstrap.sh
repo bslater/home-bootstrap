@@ -27,7 +27,7 @@ curl --fail-with-body --location --show-error --silent \
      "$LIB_URL" -o lib.sh
 
 # lock down perms
-chmod 0644 modules/lib.sh
+chmod 0644 lib.sh
 
 # --- fetch setup-pi.sh ---
 curl --fail-with-body --location --show-error --silent \
