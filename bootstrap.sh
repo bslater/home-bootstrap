@@ -21,11 +21,10 @@ SETUP_URL="https://raw.githubusercontent.com/bslater/home/main/setup-pi.sh"
 LIB_URL="https://raw.githubusercontent.com/bslater/home/main/modules/lib.sh"
 
 # --- fetch lib.sh first (so setup can source it) ---
-mkdir -p modules
 curl --fail-with-body --location --show-error --silent \
      -H "Authorization: token ${GITHUB_TOKEN}" \
      -H "Accept: application/vnd.github.v3.raw" \
-     "$LIB_URL" -o modules/lib.sh
+     "$LIB_URL" -o lib.sh
 
 # lock down perms
 chmod 0644 modules/lib.sh
