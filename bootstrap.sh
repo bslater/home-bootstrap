@@ -8,24 +8,37 @@ IFS=$'\n\t'
 command -v curl >/dev/null 2>&1 || { echo "curl not found. Install curl first."; exit 1; }
 
 # --- token (masked prompt if not provided) ---
-if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+if [[ -z "${GITHUB_TOKEN:-}" && -z "${GH_TOKEN:-}" ]]; then
   read -rsp "Enter your GitHub token: " GITHUB_TOKEN
   echo
+else
+  # accept either env var name
+  GITHUB_TOKEN="${GITHUB_TOKEN:-${GH_TOKEN}}"
 fi
 
+# --- repo urls ---
 SETUP_URL="https://raw.githubusercontent.com/bslater/home/main/setup-pi.sh"
-SETUP_FILE="setup-pi.sh"
+LIB_URL="https://raw.githubusercontent.com/bslater/home/main/modules/lib.sh"
 
-# --- fetch setup script (robust curl flags) ---
+# --- fetch lib.sh first (so setup can source it) ---
+mkdir -p modules
 curl --fail-with-body --location --show-error --silent \
      -H "Authorization: token ${GITHUB_TOKEN}" \
      -H "Accept: application/vnd.github.v3.raw" \
-     "$SETUP_URL" -o "$SETUP_FILE"
+     "$LIB_URL" -o modules/lib.sh
 
-# lock down perms and run
-chmod 700 "$SETUP_FILE"
+# lock down perms
+chmod 0644 modules/lib.sh
 
-# Prefer exporting the token so it isn't visible in process args
+# --- fetch setup-pi.sh ---
+curl --fail-with-body --location --show-error --silent \
+     -H "Authorization: token ${GITHUB_TOKEN}" \
+     -H "Accept: application/vnd.github.v3.raw" \
+     "$SETUP_URL" -o setup-pi.sh
+
+chmod 700 setup-pi.sh
+
+# --- run setup (export token to avoid argv leakage) ---
 export GITHUB_TOKEN
-bash "./$SETUP_FILE"
+./setup-pi.sh
 unset GITHUB_TOKEN
